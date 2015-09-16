@@ -8,6 +8,34 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <SplitView x:Name="splitView" OpenPaneLength="256" CompactPaneLength="48" IsPaneOpen="False" DisplayMode="CompactOverlay"  HorizontalAlignment="Left" VerticalAlignment="Top">
+            <SplitView.Pane>
+                <Grid x:Name="svCollapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Button x:Name="btHamburger" Background="Coral" Width="40" Height="40" Click="btHamburger_Click" Grid.Row="0"/>
+                    <TextBlock Text="App Content" x:Name="svHeader" FontWeight="Bold" Margin="60,12,0,0"/>
+                    <ListView x:Name="svItemList" SelectionMode="None" Grid.Row="1" VerticalAlignment="Stretch" Margin="0,12,0,0" ItemClick="svItemList_ItemClick" />
+                    <StackPanel Orientation="Horizontal" Margin="14,24,0,24" Grid.Row="2">
+                        <SymbolIcon Symbol="Setting" />
+                        <TextBlock Text="Settings" VerticalAlignment="Center" Margin="24,0,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </SplitView.Pane>
+
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="Content" FontWeight="Bold" Margin="12,12,0,0"/>
+                <TextBlock x:Name="tbContent" Grid.Row="1" Margin="12,12,0,0" Text="Start up"/>
+            </Grid>
+        </SplitView>
 
     </Grid>
 </Page>
