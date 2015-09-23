@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NFCTagger.Model;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,57 +24,45 @@ namespace NFCTagger
     /// </summary>
     public sealed partial class MainPage : Page
     {
+
+        /// <summary>
+        /// Object required for databinding. Made private so it can't be changed
+        /// </summary>
+        private ObservableCollection<NavigationItem> _NavigationLinks = new ObservableCollection<NavigationItem>()
+        {
+            new NavigationItem() {name = "Home", symbol = Symbol.Home },
+            new NavigationItem() {name = "Message", symbol = Symbol.Message },
+            new NavigationItem() {name = "Message 2", symbol = Symbol.Message },
+        };
+
+        /// <summary>
+        /// Allowes access for databinding, used c# 6.0 lampda expression to make it shorter
+        /// </summary>
+        public ObservableCollection<NavigationItem> navigationLinks => _NavigationLinks;
+
         public MainPage()
         {
             this.InitializeComponent();
-            ListView bla = DatabindingExampleListView();
-            List<String> bla2 = DatabindingExampleList();
-
-            svItemList.Items.Add(bla);
         }
 
-        private ListView DatabindingExampleListView()
-        {
-            ListView list = new ListView();
-            list.Items.Add("Item 0");
-            list.Items.Add("Item 1");
-            list.Items.Add("Item 2");
-            list.Items.Add("Item 3");
-            list.Items.Add("Item 4");
-
-            list.SelectionChanged += List_SelectionChanged;
-
-            return list;
-        }
-        private List<string> DatabindingExampleList()
-        {
-            List<String> list = new List<string>();
-            list.Add("Item 0");
-            list.Add("Item 1");
-            list.Add("Item 2");
-            list.Add("Item 3");
-            list.Add("Item 4");
-            
-            return list;
-        }
-
-        private void List_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            SolidColorBrush blueBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(1, 0, 0, 1));
-            this.Background = blueBrush;
-        }
-
+        /// <summary>
+        /// Event for clicking an item in the ListView.
+        /// For now it only changes the background color for one specific item.
+        /// </summary>
         private void svItemList_ItemClick(object sender, ItemClickEventArgs e)
         {
+            if (sender != typeof(ListView))
+                return;
+            var listItem = sender as ListView;
             SolidColorBrush blueBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(1,0,0,1));
-            this.Background = blueBrush;
-            var obj = (ListView)sender
-//            tbContent.Text = 
+            listItem.Background = blueBrush;
         }
 
         private void btHamburger_Click(object sender, RoutedEventArgs e)
         {
             splitView.IsPaneOpen = !splitView.IsPaneOpen;
         }
+
+
     }
 }
