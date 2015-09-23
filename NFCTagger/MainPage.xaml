@@ -9,17 +9,23 @@
 
     <Page.Resources>
         <DataTemplate x:Key="NavigationItemTemplate" x:DataType="local:NavigationItem">
-            <StackPanel Orientation="Horizontal" Margin="2,0,0,0">
+            <StackPanel Orientation="Horizontal" Margin="2,0,0,0" >
                 <SymbolIcon Symbol="{x:Bind symbol}" />
                 <TextBlock Text="{x:Bind name}" Margin="24,0,0,0" VerticalAlignment="Center" />
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="ComboBoxUriItemTemplate" x:DataType="local:UriItem">
+            <StackPanel Orientation="Horizontal">
+                <SymbolIcon Symbol="{x:Bind symbol}" />
+                <TextBlock Text="{x:Bind name}" VerticalAlignment="Center" Margin="4,0,0,0" />
+            </StackPanel>
+        </DataTemplate>
     </Page.Resources>
-    
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        
+
         <!-- Navigation Bar and propeties -->
-        <SplitView x:Name="splitView" OpenPaneLength="256" CompactPaneLength="48" IsPaneOpen="False" DisplayMode="CompactOverlay"  HorizontalAlignment="Left" VerticalAlignment="Top">
+        <SplitView x:Name="splitView" OpenPaneLength="256" CompactPaneLength="48" IsPaneOpen="False" DisplayMode="CompactOverlay" VerticalAlignment="Top" HorizontalAlignment="Left" >
             <SplitView.Pane>
                 <Grid x:Name="svCollapsed">
                     <Grid.RowDefinitions>
@@ -30,7 +36,7 @@
                     <Button x:Name="btHamburger" Background="Coral" Width="48" Height="48" Click="btHamburger_Click" />
                     <TextBlock Text="App Content" x:Name="svHeader" FontWeight="Bold" Margin="60,12,0,0"/>
                     <ListView x:Name="svItemList" ItemsSource="{x:Bind navigationLinks}" ItemTemplate="{StaticResource NavigationItemTemplate}" SelectionMode="None" Grid.Row="1" VerticalAlignment="Stretch" Margin="0,12,0,0" ItemClick="svItemList_ItemClick" />
-                    <StackPanel Orientation="Horizontal" Margin="14,24,0,24" Grid.Row="2">
+                    <StackPanel Orientation="Horizontal" Margin="14,24,0,24" Grid.Row="2" Tapped="StackPanel_Tapped">
                         <SymbolIcon Symbol="Setting"/>
                         <TextBlock Text="Settings" VerticalAlignment="Center" Margin="24,0,0,0"/>
                     </StackPanel>
@@ -38,6 +44,8 @@
             </SplitView.Pane>
 
             <!-- Content on the main screen -->
+            <!--<Frame x:Name="MainFrame" /> -->
+            
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -46,12 +54,15 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="Content" FontWeight="Bold" Margin="45,10,0,0"/>
                 <TextBlock x:Name="tbContent" Grid.Row="1" Margin="12,12,0,0" Text="Start up"/>
+
                 <StackPanel Orientation="Vertical" Grid.Row="2">
                     <Button x:Name="btnOpen" Background="Blue" Click="btnOpen_Click" Width="96" Height="48" Grid.Row="2" HorizontalAlignment="Center" />
                     <TextBlock x:Name="tbOpenStatus" VerticalAlignment="Center" />
+                    <ComboBox x:Name="cbUri" ItemsSource="{x:Bind uriItems}" ItemTemplate="{StaticResource ComboBoxUriItemTemplate}" SelectionChanged="cbUri_SelectionChanged" PlaceholderText="Change to open a app" Width="200" />
                 </StackPanel>
-            </Grid>
+            </Grid> 
         </SplitView>
+
 
     </Grid>
 </Page>
