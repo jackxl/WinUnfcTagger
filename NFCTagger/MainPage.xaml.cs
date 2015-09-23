@@ -63,6 +63,12 @@ namespace NFCTagger
             splitView.IsPaneOpen = !splitView.IsPaneOpen;
         }
 
+        private async void btnOpen_Click(object sender, RoutedEventArgs e)
+        {
+            var uriBing = new Uri(@"http://www.bing.com");
+            var success = await Windows.System.Launcher.LaunchUriAsync(uriBing);
 
+            tbOpenStatus.Text = success ? "Succes" : "Failed";
+        }
     }
 }

@@ -42,9 +42,14 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="2*" />
                 </Grid.RowDefinitions>
                 <TextBlock Text="Content" FontWeight="Bold" Margin="45,10,0,0"/>
                 <TextBlock x:Name="tbContent" Grid.Row="1" Margin="12,12,0,0" Text="Start up"/>
+                <StackPanel Orientation="Vertical" Grid.Row="2">
+                    <Button x:Name="btnOpen" Background="Blue" Click="btnOpen_Click" Width="96" Height="48" Grid.Row="2" HorizontalAlignment="Center" />
+                    <TextBlock x:Name="tbOpenStatus" VerticalAlignment="Center" />
+                </StackPanel>
             </Grid>
         </SplitView>
 
