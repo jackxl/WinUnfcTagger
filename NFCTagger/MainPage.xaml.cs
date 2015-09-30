@@ -1,4 +1,5 @@
-﻿using NFCTagger.Model;
+﻿using NFCTagger.ControlPages;
+using NFCTagger.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,26 +31,19 @@ namespace NFCTagger
         /// </summary>
         private ObservableCollection<NavigationItem> _NavigationLinks = new ObservableCollection<NavigationItem>()
         {
-            new NavigationItem() {name = "Home", symbol = Symbol.Home },
-            new NavigationItem() {name = "Message", symbol = Symbol.Message },
-            new NavigationItem() {name = "Message 2", symbol = Symbol.Message },
-        };
-        private ObservableCollection<UriItem> _UriItems = new ObservableCollection<UriItem>()
-        {
-            new UriItem() { name = "Bing", uri = new Uri(@"http://www.bing.com"), symbol = Symbol.Globe},
-            new UriItem() { name = "Google", uri = new Uri(@"http://www.google.com"), symbol = Symbol.Globe}
-
+            new NavigationItem() {name = "Home", symbol = Symbol.Home, pageFrame = typeof(Home) },
+            new NavigationItem() {name = "UriManager", symbol = Symbol.Globe, pageFrame = typeof(UriManager) },
+            new NavigationItem() {name = "Advanced Seddings", symbol = Symbol.Setting, pageFrame = typeof(AdvancedSettings)},
         };
 
         /// <summary>
         /// Allowes access for databinding, used c# 6.0 lampda expression to make it shorter
         /// </summary>
         public ObservableCollection<NavigationItem> navigationLinks => _NavigationLinks;
-        public ObservableCollection<UriItem> uriItems => _UriItems;
-
         public MainPage()
         {
             this.InitializeComponent();
+            this.MainFrame.Navigate(typeof(Home));
         }
 
         #region EVENTS
@@ -59,39 +53,25 @@ namespace NFCTagger
         /// </summary>
         private void svItemList_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (sender != typeof(ListView))
-                return;
-            var listItem = sender as ListView;
-            SolidColorBrush blueBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(1,0,0,1));
-            listItem.Background = blueBrush;
+            var item = e.ClickedItem as NavigationItem;
+            if (item?.pageFrame != null)
+            {
+                this.MainFrame.Navigate((e.ClickedItem as NavigationItem).pageFrame);
+            }
+            else
+            {
+                this.MainFrame.Navigate(typeof(Home));
+            }
         }
 
         private void btHamburger_Click(object sender, RoutedEventArgs e)
         {
-
             splitView.IsPaneOpen = !splitView.IsPaneOpen;
-        }
-
-        private async void btnOpen_Click(object sender, RoutedEventArgs e)
-        {
-            var uriBing = new Uri(@"http://www.bing.com");
-            var launchOptions = new Windows.System.LauncherOptions();
-            launchOptions.TreatAsUntrusted = true;
-            launchOptions.DesiredRemainingView = Windows.UI.ViewManagement.ViewSizePreference.UseMore;
-
-            var success = await Windows.System.Launcher.LaunchUriAsync(uriBing, launchOptions);
-
-            //tbOpenStatus.Text = success ? "Succes" : "Failed";
-        }
-
-        private void cbUri_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
 
         private async void StackPanel_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            var uriBing = new Uri(@"ms-call:settings");
+            var uriBing = new Uri("ms-call:settings");
             var launchOptions = new Windows.System.LauncherOptions();
             launchOptions.TreatAsUntrusted = true;
             launchOptions.DesiredRemainingView = Windows.UI.ViewManagement.ViewSizePreference.UseMore;
@@ -99,12 +79,5 @@ namespace NFCTagger
             var success = await Windows.System.Launcher.LaunchUriAsync(uriBing, launchOptions);
         }
         #endregion
-
-/*      Fix in future?  
-        public async Task<bool> OpenUriProcess(Uri uri, bool isTrusted)
-        {
-            return await Windows.System.Launcher.LaunchUriAsync(uri, new Windows.System.LauncherOptions() { TreatAsUntrusted = !isTrusted } );
-        }
-        */
     }
 }

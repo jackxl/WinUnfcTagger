@@ -11,5 +11,6 @@ namespace NFCTagger.Model
     {
         public string name { get; set; }
         public Symbol symbol { get; set; }
+        public Type pageFrame { get; set; }
     }
 }
